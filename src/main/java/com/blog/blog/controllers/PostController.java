@@ -4,10 +4,7 @@ import com.blog.blog.models.Post;
 import com.blog.blog.repos.PostRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,13 +18,8 @@ public class PostController {
     }
 
     @GetMapping("/posts")
-    public String postsIndex(Model model) {
-        List posts = new ArrayList<>();
-        Post pilot = new Post("pilot", "This is the first post of my blog!");
-        posts.add(pilot);
-        Post laCroix = new Post("La Croix", "My favorite flavor of La Croix is Limoncello.");
-        posts.add(laCroix);
-        model.addAttribute("posts", posts);
+    public String postsIndex(Model viewModel) {
+        viewModel.addAttribute("posts", postDao.findAll());
         return "/posts/index";
     }
 
@@ -40,17 +32,20 @@ public class PostController {
 
     //GET the form for creating a post
     @GetMapping("/posts/create")
-    @ResponseBody
     public String createPostDoGet() {
-        return "View the form for creating a post";
+        return "/posts/new";
     }
 
     //POST the created post
     @PostMapping("/posts/create")
     @ResponseBody
-    public String createPostDoPost() {
-        return "Create a new post";
+    public String createPostDoPost(
+            @RequestParam(name = "title") String title,
+            @RequestParam(name = "body") String body
+    ) {
+        Post post = new Post(title, body);
+        Post dbPost = postDao.save(post);
+        return "create a new Post with the id: " + dbPost.getId();
     }
-
 
 }
