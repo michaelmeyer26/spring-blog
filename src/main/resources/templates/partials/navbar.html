@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <nav th:fragment="nav" class="nav bg-dark">
+        <a class="nav-link text-light" th:href="@{/}">Blog Home</a>
+        <a class="nav-link text-light" th:href="@{/posts}">Posts</a>
+        <a class="nav-link text-light" th:href="@{/posts/create}">Create a com.blog.blog.models.Post</a>
+        <a class="nav-link text-light" th:href="@{/register}">Register</a>
+        <a class="nav-link text-light" th:href="@{/login}">Login</a>
+    </nav>
+
+</body>
+</html>
