@@ -15,6 +15,10 @@ public class Post {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String body;
 
+    @ManyToOne
+    @JoinColumn (name = "user_id")
+    private User user;
+
     public Post() {}
 
     //Create
@@ -52,5 +56,13 @@ public class Post {
 
     public String getBody() {
         return this.body;
+    }
+
+    public void setOwner(User user) {
+        this.user = user;
+    }
+
+    public User getOwner() {
+        return this.user;
     }
 }

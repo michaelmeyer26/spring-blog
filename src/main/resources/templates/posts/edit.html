@@ -16,7 +16,10 @@
         Body:
         <input name="body">
         <br>
-        <input type="submit">
+        <input class="btn btn-success" type="submit" />
+    </form>
+    <form th:action="@{/posts/{id}/delete(id=${post.getId()})}" th:method="post">
+        <button class="btn btn-danger">Delete</button>
     </form>
 </div>
 

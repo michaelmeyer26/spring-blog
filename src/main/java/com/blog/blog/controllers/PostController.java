@@ -1,7 +1,9 @@
 package com.blog.blog.controllers;
 
 import com.blog.blog.models.Post;
+import com.blog.blog.models.User;
 import com.blog.blog.repos.PostRepository;
+import com.blog.blog.repos.UserRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,9 +14,11 @@ import java.util.List;
 @Controller
 public class PostController {
 
+    private final UserRepository userDao;
     private final PostRepository postDao;
 
-    public PostController(PostRepository postDao) {
+    public PostController(UserRepository userDao, PostRepository postDao) {
+        this.userDao = userDao;
         this.postDao = postDao;
     }
 
@@ -59,14 +63,21 @@ public class PostController {
 
     //POST the created post
     @PostMapping("/posts/create")
-    @ResponseBody
     public String createPostDoPost(
             @RequestParam(name = "title") String title,
             @RequestParam(name = "body") String body
     ) {
+        User user = userDao.getOne(1L); //just get the first user in the db
         Post post = new Post(title, body);
+        post.setOwner(user);
         Post dbPost = postDao.save(post);
-        return "create a new Post with the id: " + dbPost.getId();
+        return "redirect:/posts/" + dbPost.getId();
+    }
+
+    @PostMapping("/posts/{id}/delete")
+    public String deletePost(@PathVariable long id) {
+        postDao.deleteById(id);
+        return "redirect:/posts";
     }
 
     @GetMapping("/posts/search")
