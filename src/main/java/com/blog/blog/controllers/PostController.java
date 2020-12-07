@@ -4,6 +4,7 @@ import com.blog.blog.models.Post;
 import com.blog.blog.models.User;
 import com.blog.blog.repos.PostRepository;
 import com.blog.blog.repos.UserRepository;
+import com.blog.blog.services.EmailService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,10 +17,12 @@ public class PostController {
 
     private final UserRepository userDao;
     private final PostRepository postDao;
+    private final EmailService emailService;
 
-    public PostController(UserRepository userDao, PostRepository postDao) {
+    public PostController(UserRepository userDao, PostRepository postDao, EmailService emailService) {
         this.userDao = userDao;
         this.postDao = postDao;
+        this.emailService = emailService;
     }
 
     @GetMapping("/posts")
@@ -43,34 +46,27 @@ public class PostController {
 
     //POST edit values
     @PostMapping("/posts/{id}/edit")
-    public String editPost(
-            @PathVariable long id,
-            @RequestParam(name = "title") String title,
-            @RequestParam(name = "body") String body
-    ) {
-        Post dbPost = postDao.getOne(id);
-        dbPost.setTitle(title);
-        dbPost.setBody(body);
-        postDao.save(dbPost);
-        return "redirect:/posts/" + dbPost.getId();
+    public String editPost(@ModelAttribute Post postToBeUpdated) {
+        User user = userDao.getOne(1L);
+        postToBeUpdated.setOwner(user);
+        postDao.save(postToBeUpdated);
+        return "redirect:/posts/" + postToBeUpdated.getId();
     }
 
     //GET the form for creating a post
     @GetMapping("/posts/create")
-    public String createPostDoGet() {
-        return "/posts/new";
+    public String createPostDoGet(Model model) {
+        model.addAttribute("post", new Post());
+        return "/posts/create";
     }
 
     //POST the created post
     @PostMapping("/posts/create")
-    public String createPostDoPost(
-            @RequestParam(name = "title") String title,
-            @RequestParam(name = "body") String body
-    ) {
+    public String createPostDoPost(@ModelAttribute Post post) {
         User user = userDao.getOne(1L); //just get the first user in the db
-        Post post = new Post(title, body);
         post.setOwner(user);
         Post dbPost = postDao.save(post);
+        emailService.prepareAndSend(dbPost, "Post successfully created", "You can find it with the id of " + dbPost.getId());
         return "redirect:/posts/" + dbPost.getId();
     }
 
