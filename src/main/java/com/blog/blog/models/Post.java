@@ -17,11 +17,13 @@ public class Post {
 
     public Post() {}
 
+    //Create
     public Post (String title, String body) {
         this.title = title;
         this.body = body;
     }
 
+    //Read
     public Post (long id, String title, String body) {
         this.id = id;
         this.title = title;
