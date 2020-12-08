@@ -29,20 +29,20 @@ public class PostController {
     @GetMapping("/posts")
     public String postsIndex(Model viewModel) {
         viewModel.addAttribute("posts", postDao.findAll());
-        return "/posts/index";
+        return "posts/index";
     }
 
     @GetMapping("/posts/{id}")
     public String postId(@PathVariable long id, Model viewModel) {
         viewModel.addAttribute("post", postDao.getOne(id));
-        return "/posts/show";
+        return "posts/show";
     }
 
     //GET edit form
     @GetMapping("/posts/{id}/edit")
     public String showEditForm(@PathVariable long id, Model viewModel) {
         viewModel.addAttribute("post", postDao.getOne(id));
-        return "/posts/edit";
+        return "posts/edit";
     }
 
     //POST edit values
@@ -58,7 +58,7 @@ public class PostController {
     @GetMapping("/posts/create")
     public String createPostDoGet(Model model) {
         model.addAttribute("post", new Post());
-        return "/posts/create";
+        return "posts/create";
     }
 
     //POST the created post
@@ -82,6 +82,6 @@ public class PostController {
         term = "%" + term + "%";
         List<Post> dbPost = postDao.findAllByTitleIsLike(term);
         viewModel.addAttribute("posts", dbPost);
-        return "/posts/index";
+        return "posts/index";
     }
 }
