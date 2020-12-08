@@ -1,22 +1,29 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
+<head th:replace="partials/head :: head('Create an Account')">
     <meta charset="UTF-8" />
     <title>Sign up</title>
 </head>
 <body>
-<h1>Create an account</h1>
-<form th:action="@{/sign-up}" method="POST" th:object="${user}">
-    <label for="username">Username</label>
-    <input id="username" th:field="*{username}" />
+<nav th:replace="partials/navbar :: nav"></nav>
+<header th:replace="partials/header :: header('Create an Account')"></header>
 
-    <label for="email">Email</label>
-    <input id="email" th:field="*{email}" />
+<main class="container">
+    <form th:action="@{/sign-up}" method="POST" th:object="${user}">
+        <label for="username">Username</label>
+        <input id="username" th:field="*{username}" />
 
-    <label for="password">Password</label>
-    <input id="password" type="password" th:field="*{password}" />
+        <label for="email">Email</label>
+        <input id="email" th:field="*{email}" />
 
-    <input value="Sign me up!" type="submit" />
-</form>
+        <label for="password">Password</label>
+        <input id="password" type="password" th:field="*{password}" />
+
+        <input value="Sign me up!" type="submit" />
+    </form>
+</main>
+
+<footer th:replace="partials/footer :: footer"></footer>
+<th:block th:include="partials/scripts :: scripts"></th:block>
 </body>
 </html>

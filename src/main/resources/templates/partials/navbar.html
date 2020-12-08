@@ -5,15 +5,29 @@
     <title>Title</title>
 </head>
 <body>
-    <nav th:fragment="nav" class="nav bg-dark">
-        <a class="nav-link text-light" th:href="@{/}">Blog Home</a>
-        <a class="nav-link text-light" th:href="@{/posts}">Posts</a>
-        <a class="nav-link text-light" th:href="@{/posts/create}">Create a com.blog.blog.models.Post</a>
-        <a class="nav-link text-light" th:href="@{/sign-up}" th:class="ml-auto">Register</a>
-        <a class="nav-link text-light" th:href="@{/login}">Login</a>
-        <form th:action="@{/logout}" th:method="post">
-            <button class="btn-link btn" style="margin-top: 8px">Logout</button>
-        </form>
+    <nav th:fragment="nav" >
+        <ul class="nav bg-dark">
+            <li class="nav-item">
+                <a class="nav-link text-light" th:href="@{/}">Blog Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-light" th:href="@{/posts}">Posts</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-light" th:href="@{/posts/create}">Create a Post</a>
+            </li>
+            <li class="nav-item  ml-auto">
+                <a class="nav-link text-light" th:href="@{/sign-up}">Sign up</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-light" th:href="@{/login}">Login</a>
+            </li>
+            <li class="nav-item">
+                <form th:action="@{/logout}" th:method="post">
+                    <button class="btn-link btn nav-link text-light" style="margin-top: 8px">Logout</button>
+                </form>
+            </li>
+        </ul>
     </nav>
 
 </body>
