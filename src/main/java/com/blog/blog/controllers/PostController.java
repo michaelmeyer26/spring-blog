@@ -5,6 +5,7 @@ import com.blog.blog.models.User;
 import com.blog.blog.repos.PostRepository;
 import com.blog.blog.repos.UserRepository;
 import com.blog.blog.services.EmailService;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -63,7 +64,7 @@ public class PostController {
     //POST the created post
     @PostMapping("/posts/create")
     public String createPostDoPost(@ModelAttribute Post post) {
-        User user = userDao.getOne(1L); //just get the first user in the db
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal(); //just get the first user in the db
         post.setOwner(user);
         Post dbPost = postDao.save(post);
         emailService.prepareAndSend(dbPost, "Post successfully created", "You can find it with the id of " + dbPost.getId());
